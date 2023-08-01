@@ -1,12 +1,22 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { stripe } from "@/utils/stripe";
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+export default function Home({ products }) {
+  console.log(products)
   return (
     <div>
       home
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const products = await stripe.products.list({
+    limit: 8
+  })
+
+  return {
+    props: {
+      products
+    }
+  }
 }
