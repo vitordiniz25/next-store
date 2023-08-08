@@ -4,6 +4,13 @@ import { useShoppingCart } from "use-shopping-cart"
 
 export default function CartPage() {
     const { cartCount, clearCart, formattedTotalPrice, cartDetails } = useShoppingCart()
+    const [isRedirecting, setRedirecting] = useState(false)
+
+    async function onCheckout() {
+        if(cartCount > 0){
+            
+        }
+    }
 
     return(
         <div className="container xl:max-w-screen-xl mx-auto py-12 px-6">
@@ -47,7 +54,9 @@ export default function CartPage() {
                             focus:ring-4 focus:ring-opacity-50 focus:ring-yellow-500 text-white
                             transition-colors disabled:opacity-50 disabled:cursor-not-allowed
                             disabled:hover:bg-yellow-500 mt-4 max-w-max
-                        ">
+                        "
+                            onClick={onCheckout}
+                        >
                             Go to Checkout
                         </button>
                     </div>
