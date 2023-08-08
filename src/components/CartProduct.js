@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useShoppingCart } from "use-shopping-cart";
 
 export default function CartProduct({ product }) {
-    const {setItemQuantity} = useShoppingCart()
+    const {setItemQuantity, removeItem} = useShoppingCart()
 
     return(
         <div className="flex justify-between space-x-4 hover:shadow-lg
@@ -44,7 +44,7 @@ export default function CartProduct({ product }) {
                     {product.formattedPrice}
                 </p>
 
-                <button className="ml-4 hover:text-red-500">
+                <button onClick={() => removeItem(product.id)} className="ml-4 hover:text-red-500">
                     <XCircleIcon className="w-6 h-6 flex-shrink-0 opacity-50 hover:opacity-100 transition-opacity" />
                 </button>
             </div>
