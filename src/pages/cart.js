@@ -1,11 +1,12 @@
 import CartProduct from "@/components/CartProduct"
 import axios from "axios"
 import Link from "next/link"
+import { useState } from "react"
 import { useShoppingCart } from "use-shopping-cart"
 
 export default function CartPage() {
     const { cartCount, clearCart, formattedTotalPrice, cartDetails, redirectToCheckout } = useShoppingCart()
-    const [isRedirecting, setRedirecting] = useState(false)
+    const [ isRedirecting, setRedirecting ] = useState(false)
 
     async function onCheckout() {
         if(cartCount > 0){
