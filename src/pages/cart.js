@@ -1,14 +1,26 @@
 import CartProduct from "@/components/CartProduct"
+import axios from "axios"
 import Link from "next/link"
 import { useShoppingCart } from "use-shopping-cart"
 
 export default function CartPage() {
-    const { cartCount, clearCart, formattedTotalPrice, cartDetails } = useShoppingCart()
+    const { cartCount, clearCart, formattedTotalPrice, cartDetails, redirectToCheckout } = useShoppingCart()
     const [isRedirecting, setRedirecting] = useState(false)
 
     async function onCheckout() {
         if(cartCount > 0){
-            
+            try{
+                setRedirecting(true)
+                const { id } = await axios.post("/api/checkout-sessions", cartDetails).then((res) => res.data)
+                const result = await redirectToCheckout(id)
+                if(result?.error){
+                    console.log("Error: ", result.error)
+                }
+            } catch (error) {
+                console.log("Error: ", error)
+            } finally {
+                setRedirecting(false)
+            }
         }
     }
 
@@ -49,7 +61,9 @@ export default function CartPage() {
                             Total:
                             <span className="font-semibold">{formattedTotalPrice}</span>    
                         </p>
-                        <button className="border rounded py-2 px-6 bg-yellow-500
+                        <button 
+                            disabled={isRedirecting}
+                            className="border rounded py-2 px-6 bg-yellow-500
                             hover:bg-yellow-600 border-yellow-500 hover:border-yellow-600
                             focus:ring-4 focus:ring-opacity-50 focus:ring-yellow-500 text-white
                             transition-colors disabled:opacity-50 disabled:cursor-not-allowed
@@ -57,7 +71,7 @@ export default function CartPage() {
                         "
                             onClick={onCheckout}
                         >
-                            Go to Checkout
+                            {isRedirecting ? "Redirecting..." : "Go to Checkout"}
                         </button>
                     </div>
                 </div>
